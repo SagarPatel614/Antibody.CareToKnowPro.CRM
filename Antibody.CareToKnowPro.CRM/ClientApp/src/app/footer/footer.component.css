@@ -1,0 +1,31 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+@charset "UTF-8";
+
+.footer-col p, .footer-col a {
+  margin: 0px;
+  color: #2C394C;
+}
+
+.footer-img {
+  min-height: 40px;
+  height: 6vh;
+  width: auto;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+footer {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  footer {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}

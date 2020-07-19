@@ -1,0 +1,407 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-success">
+                        <h4 class="card-title">Edit HCP</h4>
+                        <p class="card-category">Edit required information</p>
+                    </div>
+                    <div class="card-body">
+                        <mat-card *ngIf="!isDatafilled" style="display: flex; justify-content: center; align-items: center">
+                            <mat-progress-spinner color="primary" mode="indeterminate">
+                            </mat-progress-spinner>
+                        </mat-card>
+                        <form [formGroup]="userForm" *ngIf="isDatafilled" (ngSubmit)="updateUserForm()" #resetStudentForm="ngForm" novalidate>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="First Name" formControlName="Firstname" required>
+                                        <mat-error>
+                                            <span *ngIf="userForm?.controls.Firstname?.errors?.required"> Please provide a valid First Name</span>
+                                            <span *ngIf="userForm?.controls.Firstname?.errors?.maxlength">First Name cantnot be more than 200 characters long</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="Last Name" formControlName="Lastname" required>
+                                        <mat-error>
+                                            <span *ngIf="userForm?.controls.Lastname?.errors?.required"> Please provide a valid </span>
+                                            <span *ngIf="userForm?.controls.Lastname?.errors?.maxlength">Last Name cantnot be more than 200 characters long</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="Email address" type="email" formControlName="Email" required>
+                                        <mat-error>
+                                            <span *ngIf="userForm?.controls.Email?.errors?.required"> Please provide a valid Email </span>
+                                            <span *ngIf="userForm?.controls.Email?.errors?.maxlength">Email cantnot be more than 200 characters long</span>
+                                            <span *ngIf="userForm?.controls.Email?.errors?.email">Incorrect email format</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-3">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="Secondary emails separated by ';'" type="text" formControlName="SecondaryEmails">
+                                        <mat-error>
+                                            <span *ngIf="userForm?.controls.SecondaryEmails?.errors?.pattern">Incorrect email format. Enter multiple emails separated by ';'</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <mat-form-field>
+                                        <mat-label>Select specialty</mat-label>
+                                        <mat-select formControlName="SpecialtyIds" multiple required>
+                                            <!-- <mat-select-trigger>
+                              {{ this.f.Specialities.value ? this.f.Specialities.value[0] : ''}}
+                              <span *ngIf="this.f.Specialities.value?.length > 1" class="example-additional-selection">
+                                (+{{this.f.Specialities.value.length - 1}} {{this.f.Specialities.value?.length === 2 ? 'other' : 'others'}})
+                              </span>
+                            </mat-select-trigger> -->
+                                            <mat-optgroup *ngFor="let specialities of user.specialities; let i = index" [label]=" specialities[i].group.name" [disabled]="specialities[i].group.disabled">
+                                                <mat-option *ngFor="let specialty of specialities; let i = index" [value]="specialities[i].value">
+                                                    {{specialities[i].text}}
+                                                </mat-option>
+                                            </mat-optgroup>
+                                        </mat-select>
+                                        <mat-error>
+                                            Please select valid specialty
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <label>Other Specialities</label> -->
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="Specialties not listed" formControlName="Other">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field class="">
+                                        <!-- <input matInput placeholder="Medical, nursing, or pharmacy school graduation year" formControlName="Year" required> -->
+                                        <mat-select formControlName="GraduationYear" required cdkFocusInitial color="primary" placeholder="Medical, nursing, or pharmacy school graduation year">
+                                            <mat-option *ngFor="let year of user.graduationList; let i = index" [value]="user.graduationList[i].value">
+                                                {{user.graduationList[i].text}}
+                                            </mat-option>
+
+                                            <!-- <mat-option *ngFor="let year of years; let i = index" [value]="years[i].id">
+                              {{years[i].name}}
+                            </mat-option> -->
+
+                                        </mat-select>
+                                        <mat-error>
+                                            Please select graduation year
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="Phone" type="text" formControlName="PhoneNumber">
+                                        <mat-error>
+                                            <span *ngIf="userForm?.controls.PhoneNumber?.errors?.maxlength">PhoneNumber cantnot be more than 50 characters long</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="Fax" type="text" formControlName="Fax">
+                                        <mat-error>
+                                            <span *ngIf="userForm?.controls.Fax?.errors?.maxlength">Fax cantnot be more than 50 characters long</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="Adress" type="text" formControlName="Street1">
+                                        <mat-error>
+                                            <span *ngIf="userForm?.controls.Street1?.errors?.maxlength">Address cantnot be more than 200 characters long</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="City" type="text" formControlName="City">
+                                        <mat-error>
+                                            <span *ngIf="userForm?.controls.City?.errors?.maxlength">City cantnot be more than 200 characters long</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="">
+                                        <!-- <input matInput placeholder="Province" formControlName="Province" required> -->
+                                        <mat-select formControlName="ProvinceId" required cdkFocusInitial color="primary" placeholder="Province">
+                                            <mat-option *ngFor="let province of user.provinceList; let i = index" [value]="user.provinceList[i].value">
+                                                {{user.provinceList[i].text}}
+                                            </mat-option>
+
+                                            <!-- <mat-option *ngFor="let province of provinces; let i = index" [value]="provinces[i].id">
+                            {{provinces[i].name}}
+                          </mat-option> -->
+
+
+                                        </mat-select>
+                                        <mat-error>
+                                            Please select Province
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <!-- <div class="col-md-3">
+                  <mat-form-field class="">
+                    <input matInput placeholder="Country" type="text" formControlName="Country">
+                  </mat-form-field>
+                </div> -->
+                                <div class="col-md-4">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="Postal Code" type="text" formControlName="Postal">
+                                        <mat-error>
+                                            <span *ngIf="userForm?.controls.Postal?.errors?.maxlength">Postal code cantnot be more than 7 characters long</span>
+                                            <span *ngIf="userForm?.controls.Postal?.errors?.pattern">Incorrect postalcode format</span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <mat-form-field class="">
+                                        <mat-select formControlName="EmailStatus" required cdkFocusInitial color="primary" placeholder="Email Status">
+                                            <mat-option *ngFor="let list of emailStatusList; let i = index" [value]="emailStatusList[i].id">
+                                                {{emailStatusList[i].name}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>
+                                            Please select valid email status
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="">
+                                        <mat-select formControlName="Status" required cdkFocusInitial color="primary" placeholder="Status">
+                                            <mat-option *ngFor="let list of statusList; let i = index" [value]="statusList[i].id">
+                                                {{statusList[i].name}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>
+                                            Please select valid status
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="">
+                                        <mat-select formControlName="PreferredLanguage" required cdkFocusInitial color="primary" placeholder="Preferred language">
+                                            <mat-option *ngFor="let language of languages; let i = index" [value]="languages[i].id">
+                                                {{languages[i].name}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error>
+                                            Please select preferred language
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- <label>Other Specialities</label> -->
+                                    <mat-form-field class="">
+                                        <textarea matInput placeholder="Additional Information about HCP" formControlName="AdditionalInfo"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- <label>Other Specialities</label> -->
+                                    <mat-form-field class="">
+                                        <textarea matInput placeholder="Interaction Notes" formControlName="Notes"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <mat-chip-list aria-label="User Status">
+                                <mat-chip color="accent" selected>{{user.verified ? "VERIFIED" : "REGISTERED"}}</mat-chip>
+                            </mat-chip-list>
+
+                            <a mat-raised-button [routerLink]="['/dashboard']" class="btn btn-danger pull-right">Cancel</a>
+                            <button mat-raised-button [disabled]="loading" type="submit" class="btn btn-primary pull-right" mat-raised-button mat-button color="primary">Update
+                                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                            </button>
+                            <div class="clearfix"></div>
+                        </form>
+
+                        <div class="" *ngIf="isEventfilled && user.messages.length > 0"><strong>Email History</strong></div>
+                        <table mat-table [dataSource]="user.messages" *ngIf="isEventfilled && user.messages.length  > 0" matTableResponsive matSort multiTemplateDataRows style="margin-bottom: 20px;width: 100%;">
+
+                            <ng-container matColumnDef="created">
+                                <th mat-header-cell *matHeaderCellDef> DateTime </th>
+
+                                <td mat-cell *matCellDef="let element" data-column-name="DateTime"> {{element.created | date:'medium'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="subject">
+                                <th mat-header-cell *matHeaderCellDef> Subject </th>
+
+                                <td mat-cell *matCellDef="let element" data-column-name="Subject"> {{ element.subject}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="campaign">
+                                <!-- mat-sort-header="eventDateUtc" -->
+                                <th mat-header-cell *matHeaderCellDef> Campaign </th>
+
+                                <td mat-cell *matCellDef="let element" data-column-name="Campaign"> {{element.campaign?.name != null ? element.campaign.name + " (" + element.campaign.state + ")" : "Not found"}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="lastAction">
+                                <!-- mat-sort-header="eventDateUtc" -->
+                                <th mat-header-cell *matHeaderCellDef> Last Action </th>
+
+                                <td mat-cell *matCellDef="let element" data-column-name="Last Action"> {{element.metrics?.events !== null || element.metrics?.events.length > 0 ? element.metrics?.events[0].name : ""}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="failureMessage">
+                                <!-- mat-sort-header="eventDateUtc" -->
+                                <th mat-header-cell *matHeaderCellDef> Failure Message </th>
+
+                                <td mat-cell *matCellDef="let element" data-column-name="Failure Message"> {{element.failureMessage !== null || element.failureMessage !== '' ? element.failureMessage : ""}} </td>
+                            </ng-container>
+
+                            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                            <ng-container matColumnDef="expandedDetail">
+                                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedMsgColumns.length">
+                                    <div class="element-detail" [@detailExpand]="element == expandedMsgElement ? 'expanded' : 'collapsed'">
+
+                                        <!-- <div class="col-md-12"> -->
+                                        <!-- <div>
+                            Property List
+                          </div> -->
+                                        <table mat-table [dataSource]="element.metrics?.events" style="width: 100%;" matTableResponsive>
+                                            <ng-container matColumnDef="name">
+                                                <th mat-header-cell *matHeaderCellDef>Name</th>
+                                                <td mat-cell *matCellDef="let element" data-column-name="Name"> {{element.name}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="eventDateTime">
+                                                <th mat-header-cell *matHeaderCellDef>DateTime</th>
+                                                <td mat-cell *matCellDef="let element" data-column-name="DateTime"> {{element.eventDateTime | date:'medium'}} </td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedMatricsColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedMatricsColumns;"></tr>
+
+                                        </table>
+                                        <!-- </div> -->
+
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedMsgColumns"></tr>
+                            <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+
+
+
+                            <tr mat-row *matRowDef="let row; columns: displayedMsgColumns;" class="element-row" [class.expanded-row]="expandedMsgElement === row" (click)="toggleRow1(row)">
+
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+
+
+                        </table>
+
+
+                        <div class="" *ngIf="isEventfilled"> <strong>Transaction History</strong></div>
+                        <table mat-table [dataSource]="userTransaction" matTableResponsive matSort multiTemplateDataRows>
+
+                            <ng-container matColumnDef="eventType">
+                                <th mat-header-cell *matHeaderCellDef> Transaction Type </th>
+
+                                <td mat-cell *matCellDef="let element"> {{GetEventTypeDesc(element.event.eventType)}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="user">
+                                <th mat-header-cell *matHeaderCellDef> User </th>
+
+                                <td mat-cell *matCellDef="let element"> {{ element.event.loginProfile?.firstName + ' ' + element.event.loginProfile?.lastName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="date">
+                                <!-- mat-sort-header="eventDateUtc" -->
+                                <th mat-header-cell *matHeaderCellDef> Date </th>
+
+                                <td mat-cell *matCellDef="let element"> {{element.event.eventDateUtc | UTCToLocalDate | date:'medium'}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="note">
+                                <!-- mat-sort-header="eventDateUtc" -->
+                                <th mat-header-cell *matHeaderCellDef> Interaction Notes </th>
+
+                                <td mat-cell *matCellDef="let element"> {{element.event.eventNotes}} </td>
+                            </ng-container>
+
+                            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                            <ng-container matColumnDef="expandedDetail">
+                                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                                    <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+                                        <!-- <div class="col-md-12"> -->
+                                        <!-- <div>
+                            Property List
+                          </div> -->
+                                        <table mat-table [dataSource]="element.eventEntityProperty" style="width: 100%;" matTableResponsive>
+                                            <ng-container matColumnDef="propertyName">
+                                                <th mat-header-cell *matHeaderCellDef>Property Name</th>
+                                                <td mat-cell *matCellDef="let element" data-column-name="Property Name"> {{element.propertyName}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="oldValue">
+                                                <th mat-header-cell *matHeaderCellDef>Original Value</th>
+                                                <td mat-cell *matCellDef="let element" data-column-name="Original Value"> {{element.originalValue}} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="newValue">
+                                                <th mat-header-cell *matHeaderCellDef>New Value</th>
+                                                <td mat-cell *matCellDef="let element" data-column-name="New Value"> {{element.newValue}} </td>
+                                            </ng-container>
+
+                                            <tr mat-header-row *matHeaderRowDef="displayedPropertyColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedPropertyColumns;"></tr>
+
+                                        </table>
+                                        <!-- </div> -->
+
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+
+
+
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="element-row" [class.expanded-row]="expandedElement === row" (click)="toggleRow(row)">
+
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

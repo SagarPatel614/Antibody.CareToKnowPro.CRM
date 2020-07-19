@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Export HCP Information</h2>
+<form [formGroup]="exportForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="">
+        <mat-select formControlName="currentPageOnly" cdkFocusInitial color="primary" placeholder="Make selection" required>
+            <mat-option *ngFor="let entry of selections; let i = index" [value]="selections[i].id">
+                {{selections[i].name}}
+            </mat-option>
+        </mat-select>
+        <mat-error>
+            Please make a valid selection
+        </mat-error>
+    </mat-form-field>
+    <br />
+    <div mat-dialog-actions>
+        <button mat-raised-button [disabled]="loading">Submit
+          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        </button>
+        <button mat-raised-button type="button" (click)="onNoClick()">Cancel</button>
+    </div>
+</form>

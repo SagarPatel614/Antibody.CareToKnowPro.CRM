@@ -1,0 +1,17 @@
+@media (min-width: 768px) {
+    td,
+    th {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        max-width: 200px !important;
+        padding-right: 15px !important;
+    }
+}
+
+table {
+    width: 100%;
+}
+
+.mat-column-actions {
+    text-align: right;
+}
