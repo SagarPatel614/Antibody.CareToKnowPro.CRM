@@ -1,0 +1,71 @@
+<!--<header>
+
+  <nav color="primary" class='navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3 mat-elevation-z6' style="background-color: #3f51b5!important" *ngIf="currentUser">
+    <div class="container">
+      <a class="navbar-brand" [routerLink]='["/"]'>Antibody CareToKnowPro CRM</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation"
+              [attr.aria-expanded]="isExpanded" (click)="toggle()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]='{"show": isExpanded}'>
+        <ul class="navbar-nav flex-grow">
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-white" [routerLink]='' (click)="logout()">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3 mat-elevation-z6' style="background-color: #3f51b5!important" *ngIf="!currentUser">
+    <div class="container">
+      <a class="navbar-brand" [routerLink]='["/"]'>Antibody CareToKnowPro CRM</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation"
+              [attr.aria-expanded]="isExpanded" (click)="toggle()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]='{"show": isExpanded}'>
+        <ul class="navbar-nav flex-grow">
+          <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+            <a class="nav-link text-white" [routerLink]='["/login"]'>Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>-->
+
+<header>
+  <mat-toolbar color="primary" class="expanded-toolbar mb-3 mat-elevation-z6" style="padding-left: 14%; padding-right: 15%; height: 70px; padding-top: 5px;">
+    <span>
+      <button mat-button routerLink="/"> <img src="logo.png" alt="Care to know Pro" width="75px"></button>
+      <!--<button mat-button routerLink="/"><mat-icon>home</mat-icon></button>-->
+    </span>
+      <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+        <button mat-button routerLink="/login" *ngIf="!currentUser">
+          <mat-icon>power_settings_new</mat-icon>
+          Login
+        </button>
+        <button mat-button *ngIf="currentUser" (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          Logout
+        </button>
+      </div>
+      <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+  <mat-menu x-position="before" #menu="matMenu">
+    <button mat-menu-item routerLink="/">
+      <mat-icon>home</mat-icon>
+      Home
+    </button>
+    <button mat-menu-item routerLink="/login" *ngIf="!currentUser">
+      <mat-icon>power_settings_new</mat-icon>
+      Login
+    </button>
+    <button mat-menu-item *ngIf="currentUser" (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      Logout
+    </button>
+  </mat-menu>
+</header> 

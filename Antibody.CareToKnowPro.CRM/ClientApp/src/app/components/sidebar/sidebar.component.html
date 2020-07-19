@@ -1,0 +1,50 @@
+<div class="logo">
+    <a [routerLink]="[this.dashboard.path]" class="simple-text" >
+        <div>
+            <img src="/assets/img/logoHR.png" style="background-color: black;height: 100%; width: 25%;"/>
+        </div>
+        <div>
+          Care To Know PRO
+        </div>
+    </a>
+</div>
+<div class="sidebar-wrapper">
+  <div *ngIf="isMobileMenu()">
+    <ul class="nav navbar-nav nav-mobile-menu">
+
+    </ul>
+  </div>
+    <ul class="nav" *ngIf="currentUser">
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+            <a class="nav-link" [routerLink]="[menuItem.path]">
+                <i class="material-icons">{{menuItem.icon}}</i>
+                <p>{{menuItem.title}}</p>
+            </a>
+        </li>
+        <li routerLinkActive="active" class="nav-item">
+          <a class="nav-link" href="javascript:void(0)" (click)="logout()">
+            <i class="material-icons">exit_to_app</i>
+            <p>Logout</p>
+          </a>
+        </li>
+    </ul>
+    <ul class="nav" *ngIf="!currentUser">
+      <li routerLinkActive="active" *ngIf="!currentUser" class="nav-item">
+        <a class="nav-link" routerLink="/login">
+            <i class="material-icons">power_settings_new</i>
+            <p>Login</p>
+        </a>
+      </li>
+
+  </ul>
+    <!-- <ul>
+      <button mat-menu-item routerLink="/login" *ngIf="!currentUser">
+        <mat-icon>power_settings_new</mat-icon>
+        Login
+      </button>
+      <button mat-menu-item *ngIf="currentUser" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        Logout
+      </button>
+    </ul> -->
+</div>

@@ -1,0 +1,231 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-success">
+                        <h4 class="card-title">HCP List</h4>
+                        <p class="card-category">List of Health Care Professional's Informations</p>
+                    </div>
+                    <div class="card-body">
+
+                        <mat-card *ngIf="!isFilterfilled" style="display: flex; justify-content: center; align-items: center">
+                            <mat-progress-spinner color="primary" mode="indeterminate">
+                            </mat-progress-spinner>
+                        </mat-card>
+
+                        <mat-card style="margin-bottom: 10px;">
+                            <form [formGroup]="filterForm" *ngIf="isFilterfilled" (ngSubmit)="loadUserPage(true)" #resetStudentForm="ngForm" novalidate>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <mat-form-field class="">
+                                            <input matInput placeholder="First Name" formControlName="FirstName">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <mat-form-field class="">
+                                            <input matInput placeholder="Last Name" formControlName="LastName">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <mat-form-field class="">
+                                            <input matInput placeholder="Email address" formControlName="Email">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <mat-form-field class="">
+                                            <mat-select formControlName="ProvinceIds" cdkFocusInitial color="primary" placeholder="Province" multiple>
+                                                <mat-option *ngFor="let province of filter.provinceList; let i = index" [value]="filter.provinceList[i].value">
+                                                    {{filter.provinceList[i].text}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <mat-form-field class="">
+                                            <mat-select formControlName="PreferredLanguage" cdkFocusInitial color="primary" placeholder="Preferred language">
+                                                <mat-option *ngFor="let language of languages; let i = index" [value]="languages[i].id">
+                                                    {{languages[i].name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- <mat-form-field>
+                          <mat-label>Select your specialty</mat-label>
+                          <mat-select  formControlName="SpecialtyIds" multiple>
+                            <mat-optgroup *ngFor="let specialities of filter.Specialties; let i = index" [label]=" specialities[i].group.name"
+                                          [disabled]="specialities[i].group.disabled">
+                              <mat-option *ngFor="let specialty of specialities; let i = index" [value]="specialities[i].value">
+                                {{specialities[i].text}}
+                              </mat-option>
+                            </mat-optgroup>
+                          </mat-select>
+                        </mat-form-field> -->
+
+                                        <mat-form-field>
+                                            <mat-label>Select your specialty</mat-label>
+                                            <mat-select formControlName="SpecialtyIds" multiple>
+                                                <mat-optgroup *ngFor="let specialities of filter.specialties; let i = index" [label]=" specialities[i].group.name" [disabled]="specialities[i].group.disabled">
+                                                    <mat-option *ngFor="let specialty of specialities; let i = index" [value]="specialities[i].value">
+                                                        {{specialities[i].text}}
+                                                    </mat-option>
+                                                </mat-optgroup>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <mat-form-field class="">
+                                            <input matInput placeholder="Other specialty separated by ','" formControlName="OtherSpecialties">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <mat-form-field class="">
+                                            <mat-select formControlName="Status" cdkFocusInitial color="primary" placeholder="Status">
+                                                <mat-option *ngFor="let list of statusList; let i = index" [value]="statusList[i].id">
+                                                    {{statusList[i].name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <mat-form-field class="">
+                                            <mat-select formControlName="EmailStatus" cdkFocusInitial color="primary" placeholder="Email Status">
+                                                <mat-option *ngFor="let list of emailStatusList; let i = index" [value]="emailStatusList[i].id">
+                                                    {{emailStatusList[i].name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <mat-form-field class="">
+                                            <mat-select formControlName="GraduationYear" cdkFocusInitial color="primary" placeholder="Medical, nursing, or pharmacy school graduation year">
+                                                <mat-option *ngFor="let year of filter.graduationList; let i = index" [value]="filter.graduationList[i].value">
+                                                    {{filter.graduationList[i].text}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <button *ngIf="UserData.length > 0 && isDatafilled" type="button" class="btn btn-danger" mat-raised-button matTooltip="Export to csv" (click)="exportToCSV()" [disabled]="exportLoader">
+                                  Export
+                                  <i class="fa fa-spinner fa-spin" *ngIf="exportLoader"></i>
+                                  </button>
+
+                                <button mat-raised-button [disabled]="!isFilterfilled" type="submit" class="btn btn-primary pull-right" mat-raised-button mat-button color="primary">
+                                  <mat-icon>person_search</mat-icon>
+                                  Search
+                                  <i class="fa fa-spinner fa-spin" *ngIf="!isFilterfilled"></i>
+                                </button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </mat-card>
+
+                        <mat-card *ngIf="!isDatafilled" style="display: flex; justify-content: center; align-items: center">
+                            <mat-progress-spinner color="primary" mode="indeterminate">
+                            </mat-progress-spinner>
+                        </mat-card>
+                        <p *ngIf="UserData.length <= 0 && isDatafilled" class="no-data">There is no HCP added yet!</p>
+
+                        <div class="" *ngIf="UserData.length > 0">
+                            <div class="mat-elevation-z8">
+                                <table mat-table [dataSource]="userDataSource" matTableResponsive style="width: 100%;" matSort matSortActive="firstName" matSortDirection="asc" matSortDisableClear>
+
+                                    <!-- <ng-container matColumnDef="userId">
+                        <th mat-header-cell *matHeaderCellDef> ID </th>
+                        <td mat-cell *matCellDef="let element"> {{element.userId}} </td>
+                      </ng-container> -->
+
+                                    <ng-container matColumnDef="firstName">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+
+                                        <td mat-cell *matCellDef="let element" data-label="firstName"> {{element.firstName}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="lastName">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+
+                                        <td mat-cell *matCellDef="let element" data-label="lastName"> {{element.lastName}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="email">
+
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+
+                                        <td mat-cell *matCellDef="let element" data-label="email"> {{element.email}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="address">
+                                        <!-- <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th> -->
+                                        <th mat-header-cell *matHeaderCellDef> Address </th>
+                                        <td mat-cell *matCellDef="let element" data-label="address"> {{ getAddress(element) }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="userSpecialty">
+                                        <!-- <th mat-header-cell *matHeaderCellDef mat-sort-header> Specialty </th> -->
+                                        <th mat-header-cell *matHeaderCellDef> Specialty </th>
+
+                                        <td mat-cell *matCellDef="let element" data-label="userSpecialty"> {{ getSpecialityString(element.userSpecialty) }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="graduationYear">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Graduation </th>
+
+                                        <td mat-cell *matCellDef="let element" data-label="graduationYear"> {{element.graduationYear}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="emailstatus">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email Status </th>
+
+                                        <td mat-cell *matCellDef="let element" data-label="emailstatus"> {{element.emailStatus}} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="status">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+
+                                        <td mat-cell *matCellDef="let element" data-label="status"> {{element.status}} </td>
+                                    </ng-container>
+
+                                    <!-- <ng-container matColumnDef="userUnsubscribe">
+                        <th mat-header-cell *matHeaderCellDef> Unsubscribe Reason </th>
+                        <td mat-cell *matCellDef="let element"> {{getUnsubscribeString(element.userUnsubscribe)}} </td>
+                      </ng-container> -->
+
+                                    <ng-container matColumnDef="preferredLanguage">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Language </th>
+
+                                        <td mat-cell *matCellDef="let element" data-label="preferredLanguage"> {{element.preferredLanguage == 'EN' ? 'English' : 'French'}}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="actions">
+                                        <th mat-header-cell *matHeaderCellDef> </th>
+                                        <td mat-cell *matCellDef="let element; let i = index;">
+                                            <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary" [routerLink]="['/edit-doctor/', element.userId]">
+                                            <mat-icon>edit</mat-icon>
+                                          </button>
+                                            <button mat-icon-button matTooltip="Click to Delete" class="iconbutton" (click)="deleteUser(i, element)" color="warn">
+                                            <mat-icon>delete</mat-icon>
+                                          </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                </table>
+
+
+                                <mat-paginator [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons></mat-paginator>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <router-outlet></router-outlet> -->

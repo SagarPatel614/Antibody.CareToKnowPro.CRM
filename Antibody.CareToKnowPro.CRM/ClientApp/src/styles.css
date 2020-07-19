@@ -1,0 +1,11 @@
+@import "~ngx-toastr/toastr.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+
+/*h1 {
+  text-align: center;
+}*/

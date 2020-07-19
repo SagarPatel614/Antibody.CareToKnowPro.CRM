@@ -1,0 +1,18 @@
+<div *ngIf="!isClipboard">
+  <div mat-dialog-content >
+    {{message}}
+  </div>
+  <br />
+  <div mat-dialog-actions>
+    <button mat-raised-button (click)="onNoClick()">No</button>
+    <button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial>Yes</button>
+  </div>
+</div>
+
+<div *ngIf="isClipboard">
+  <div class="link-container mat-elevation-z8">
+  </div>
+  <div mat-dialog-actions style="padding-top: 20px;">
+    <button mat-raised-button (click)="onNoClick()">Close</button>
+  </div>
+</div>

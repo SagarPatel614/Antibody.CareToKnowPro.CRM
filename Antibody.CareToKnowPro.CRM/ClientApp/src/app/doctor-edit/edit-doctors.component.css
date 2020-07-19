@@ -1,0 +1,37 @@
+@media (min-width: 768px) {
+    table {
+        width: 50%;
+    }
+    #innerTables {
+        width: 100%;
+    }
+}
+
+.mat-radio-button~.mat-radio-button {
+    margin-left: 16px;
+}
+
+tr.detail-row {
+    height: 0;
+}
+
+tr.element-row:not(.expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.element-row:not(.expanded-row):active {
+    background: #efefef;
+}
+
+.element-row td {
+    border-bottom-width: 0;
+}
+
+.element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+tr {
+    cursor: pointer;
+}
